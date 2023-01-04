@@ -10,6 +10,34 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+
+
+class NumberOnlyActionListener implements ActionListener {
+    private JTextField textField;
+    private JFrame frameToOpen;
+
+    public NumberOnlyActionListener(JTextField textField, JFrame frameToOpen) {
+        this.textField = textField;
+        this.frameToOpen = frameToOpen;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String text = textField.getText();
+        if (!text.matches("\\d*")) {
+            // Display error message
+            textField.setText("Enter a number");
+        } else {
+            // Open the next frame
+        	textField.setText("Number entered");
+            frameToOpen.setVisible(true);
+        }
+    }
+}
 
 public class User extends JFrame {
 
@@ -66,6 +94,12 @@ public class User extends JFrame {
 		textField.setBounds(139, 125, 308, 38);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		textField.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				textField.setText("");
+			}
+		});
 		
 		JLabel lblNewLabel_2 = new JLabel("User name :");
 		lblNewLabel_2.setFont(new Font("SansSerif", Font.PLAIN, 22));
@@ -83,6 +117,8 @@ public class User extends JFrame {
 		btnNewButton.setBackground(new Color(255, 204, 255));
 		btnNewButton.setFont(new Font("SansSerif", Font.BOLD, 21));
 		btnNewButton.setBounds(20, 310, 248, 38);
+		
+
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Feed Manufacturer");
@@ -90,6 +126,7 @@ public class User extends JFrame {
 		btnNewButton_1.setBackground(new Color(255, 204, 255));
 		btnNewButton_1.setFont(new Font("SansSerif", Font.BOLD, 21));
 		btnNewButton_1.setBounds(139, 371, 308, 38);
+		
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Report");
@@ -98,5 +135,13 @@ public class User extends JFrame {
 		btnNewButton_2.setFont(new Font("SansSerif", Font.BOLD, 21));
 		btnNewButton_2.setBounds(311, 310, 265, 38);
 		contentPane.add(btnNewButton_2);
+		NumberOnlyActionListener listener1 = new NumberOnlyActionListener(textField, new MainPage_User_HO());
+		NumberOnlyActionListener listener2 = new NumberOnlyActionListener(textField, new Mainpage_user_manufacturer());
+		NumberOnlyActionListener listener3 = new NumberOnlyActionListener(textField, new Mainpage_user_report());
+		btnNewButton.addActionListener(listener1);
+		btnNewButton_1.addActionListener(listener2);
+		btnNewButton_2.addActionListener(listener3);
+
+
 	}
 }
